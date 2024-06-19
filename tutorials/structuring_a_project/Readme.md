@@ -44,7 +44,9 @@ Note: You can check which files are currently stages with:
 
 <code> git push </code>
 
+You can also pull changes from github that others have pushed:
 
+<code> git pull </code>
 
 Make sure to make your code commits regularly, and push to github so they will be safe in the cloud! 
 
