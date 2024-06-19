@@ -14,10 +14,13 @@ conda create -n hackathon python=3.11
 
 Then activate the environment with:
 
+```
 conda activate hackathon
+```
 
 Then install the following packages as…
 
+```
 conda install jupyter
 
 conda install ipykernel
@@ -31,14 +34,11 @@ conda install numpy
 conda install pandas
 
 conda install seaborn
-
 conda install matplotlib
-
 conda install nbformat
-
 conda install orjson
 pip install kaleido
-
+```
 
 ### R instructions
 Install the following libraries in the R Studio terminal…
