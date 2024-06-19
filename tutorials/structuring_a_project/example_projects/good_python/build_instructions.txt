@@ -1,0 +1,1 @@
+pip install pandas==1.0.0 numpy==1.0.0 this==1.0.0 that==1.0.0
