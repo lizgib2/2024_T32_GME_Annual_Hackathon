@@ -5,20 +5,37 @@ Github repo for the Genetic Mechanisms and Evolution Training Grant 2024 annual 
 ## Installing Dependencies
 
 ### Python instructions
+
 Its optional, but you may want to create a new conda environment for the hackathon with:
+
+```
 conda create -n hackathon python=3.11
+```
+
 Then activate the environment with:
+
 conda activate hackathon
+
 Then install the following packages as…
+
 conda install jupyter
+
 conda install ipykernel
+
 conda install plotly
+
 pip install dash
+
 conda install numpy
+
 conda install pandas
+
 conda install seaborn
+
 conda install matplotlib
+
 conda install nbformat
+
 conda install orjson
 pip install kaleido
 
