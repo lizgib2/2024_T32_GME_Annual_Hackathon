@@ -1,0 +1,10 @@
+{
+    "1_preprocess_data": {
+        "path_to_raw_data": "path_to_raw_data",
+        "maf_filter": 0.05,
+        "path_to_filtered_data": "path to filtered data"
+    },
+    "2_analyze_data_this_way": {
+        "path_to_plots_directory":"path to plots directory"
+    } 
+}
