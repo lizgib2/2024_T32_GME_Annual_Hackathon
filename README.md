@@ -52,6 +52,7 @@ install.packages(“quantmod”)
 Dash isn’t on CRAN for some reason, so if you want to use Dash, you’ll need to execute the following. However, it requires that you have a GitHub account, generate an SSH token, and then add that to your computer’s SSH key list before it’ll let you download it. Alternatively, you may be able to download it directly from the dashR github page and install the file directly, but this hasn't been tested yet.
 
 ```
+install.packages("devtools")
 devtools::install_github(“plotly/dashR”, ref=“dev”, upgrade = TRUE) (edited) 
 ```
 
