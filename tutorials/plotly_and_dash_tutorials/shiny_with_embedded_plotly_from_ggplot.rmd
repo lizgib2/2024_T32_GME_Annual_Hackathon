@@ -1,0 +1,108 @@
+
+
+```{r}
+library(plotly)
+library(ggplot2)
+library(shiny)
+# library(htmlwidgets)
+
+path_to_full_spredixcan_results = "/beagle3/haky/users/saideep/projects/aracena_modeling/SPrediXcan/sumstats_formatted/asthma_eczema_farreira_susie/enformer_preds/spredixcan/spredixcan_results_full.txt"
+
+full_spredixcan_results = read.table(path_to_full_spredixcan_results, header = T, sep = "\t")
+print(head(full_spredixcan_results))
+
+full_spredixcan_results$neglog10p = -log10(full_spredixcan_results$pvalue)
+print(head(full_spredixcan_results))
+print(colnames(full_spredixcan_results))
+```
+
+```{r, xwas_app_v4_latest_working_app}
+
+#| standalone: true
+
+library(shiny)
+library(plotly)
+
+# Sample data for select inputs
+facet_variables <- c("condition", "modality")
+x_variables <- c("condition", "modality")
+color_variables <- c("neglog10p", "effect_size", "var_g")
+hover_variables <- c("gene_name", "condition", "modality", "neglog10p","effect_size","var_g","n_snps_used","n_snps_in_model","zscore","pvalue")
+
+ui <- navbarPage("XWAS App",
+                tabPanel("XWAS Overview",
+                  sidebarPanel(
+                    h4("Change Plot Settings"),
+                    selectInput("select_facet_variable",
+                              "Select facet variable",
+                              choices = facet_variables,
+                              selected = facet_variables[1]
+                              ),
+                    selectInput("select_x_variable",
+                              "Select x variable",
+                              choices = x_variables,
+                              selected = x_variables[1]
+                              ),
+                    selectInput("select_color_variable",
+                              "Select color variable",
+                              choices = color_variables,
+                              selected = color_variables[1]
+                              )
+                  ),
+                  mainPanel(
+                    h3("XWAS of fine-mapped Allergy Eczema Loci"),
+                    plotlyOutput("plot1"),
+                    width = 12,
+                    height = 24
+
+                  )
+                )
+)
+
+server <- function(input, output, session) {
+  observe({
+    facet_variable <- input$select_facet_variable
+    second_x_variable <- facet_variables[facet_variables != facet_variable]
+    
+    updateSelectInput(session,
+                      'select_x_variable',
+                      choices = second_x_variable,
+                      selected = second_x_variable[1])
+  })
+
+  # Plot1 - Facet = Modality, x = condition
+  output$plot1 <- renderPlotly({
+    inter_plot1 <- ggplot(full_spredixcan_results, aes_string(x = input$select_x_variable, y = "gene", 
+    #  text = paste(
+    #                 "Gene: ", full_spredixcan_results$gene, 
+    #                 "<br>Condition: ", full_spredixcan_results$condition, 
+    #                 "<br>Modality: ", full_spredixcan_results$modality,
+    #                 "<br>neglog10p: ", full_spredixcan_results$neglog10p),
+     fill = input$select_color_variable
+    )) + 
+    geom_raster(aes(
+     text = paste(
+                    "Loci: ", gene_name, 
+                    "<br>Condition: ", condition, 
+                    "<br>Modality: ", modality,
+                    "<br>neglog10p: ", neglog10p,
+                    "<br>zscore: ", zscore,
+                    "<br>pvalue: ", pvalue,
+                    "<br>effect_size: ", effect_size,
+                    "<br>n_snps_used: ", n_snps_used,
+                    "<br>n_snps_in_model: ", n_snps_in_model,
+                    "<br>var_g: ", var_g
+                    )
+    )) + 
+    scale_fill_gradient(low = "darkblue", high = "lightblue") +
+    ggtitle("XWAS of fine-mapped Allergy Eczema Loci") +
+    facet_grid(cols = vars(full_spredixcan_results[[input$select_facet_variable]]), scales = "free", space = "free_y")
+
+    fig_plotly <- ggplotly(inter_plot1, tooltip = "text", width = 1000, height = 1500)
+    fig_plotly
+  })
+}
+
+shinyApp(ui = ui, server = server)
+
+```
